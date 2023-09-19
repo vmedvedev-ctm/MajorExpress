@@ -105,11 +105,11 @@ public record DeliveryRequestService(
         if (deliveryRequest.Status is not DeliveryRequestStatus.New)
             throw new Exception($"Attempt to edit delivery request {deliveryRequestId} which status is not New");
 
-        if (string.IsNullOrEmpty(departureAddress)) deliveryRequest.DepartureAddress = departureAddress!;
+        if (!string.IsNullOrEmpty(departureAddress)) deliveryRequest.DepartureAddress = departureAddress!;
 
         if (departureTime.HasValue) deliveryRequest.DepartureTime = departureTime.Value;
 
-        if (string.IsNullOrEmpty(destinationAddress)) deliveryRequest.DestinationAddress = destinationAddress!;
+        if (!string.IsNullOrEmpty(destinationAddress)) deliveryRequest.DestinationAddress = destinationAddress!;
 
         if (destinationTime.HasValue) deliveryRequest.DestinationTime = destinationTime.Value;
 

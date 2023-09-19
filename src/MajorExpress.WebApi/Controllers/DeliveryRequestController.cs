@@ -4,7 +4,7 @@ using MajorExpress.Domain.Entities;
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace MajorExpress.WebApi.Properties;
+namespace MajorExpress.WebApi.Controllers;
 
 [Route("api/[Controller]/[action]")]
 [ApiController]
@@ -47,7 +47,7 @@ public class DeliveryRequestController : ControllerBase
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return BadRequest(e);
+            return BadRequest(e.Message);
         }
     }
 
@@ -62,7 +62,7 @@ public class DeliveryRequestController : ControllerBase
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return BadRequest(e);
+            return BadRequest(e.Message);
         }
     }
 
@@ -77,7 +77,7 @@ public class DeliveryRequestController : ControllerBase
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return BadRequest(e);
+            return BadRequest(e.Message);
         }
     }
 
@@ -93,7 +93,7 @@ public class DeliveryRequestController : ControllerBase
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return BadRequest(e);
+            return BadRequest(e.Message);
         }
     }
 
@@ -108,7 +108,7 @@ public class DeliveryRequestController : ControllerBase
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return BadRequest(e);
+            return BadRequest(e.Message);
         }
     }
 
@@ -140,7 +140,7 @@ public class DeliveryRequestController : ControllerBase
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw;
+            return BadRequest(e.Message);
         }
     }
 
@@ -155,7 +155,7 @@ public class DeliveryRequestController : ControllerBase
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return BadRequest(e);
+            return BadRequest(e.Message);
         }
     }
 
@@ -171,7 +171,7 @@ public class DeliveryRequestController : ControllerBase
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return BadRequest(e);
+            return BadRequest(e.Message);
         }
     }
 }

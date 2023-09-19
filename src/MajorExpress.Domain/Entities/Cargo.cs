@@ -4,7 +4,7 @@ namespace MajorExpress.Domain.Entities;
 
 public class Cargo : EntityBase
 {
-    public decimal Name { get; set; } = default!;
+    public string Name { get; set; } = default!;
 
     public decimal Weight { get; set; }
 
