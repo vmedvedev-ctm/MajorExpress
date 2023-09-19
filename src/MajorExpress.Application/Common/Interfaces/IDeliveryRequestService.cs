@@ -30,4 +30,6 @@ public interface IDeliveryRequestService
         DateTime? destinationTime = null,
         Guid? clientId = null,
         Guid? cargoId = null);
+
+    Task DeleteAsync(Guid deliveryRequestId, CancellationToken cancellationToken);
 }

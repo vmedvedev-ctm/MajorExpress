@@ -51,7 +51,11 @@ public record DeliveryRequestService(
 
         if (deliveryRequest == null) throw new NullReferenceException($"Attempt to cancel nonexistent delivery request");
 
-        if (string.IsNullOrEmpty(comment)) throw new Exception("Attempt to cancel delivery request with null or empty comment");
+        if (deliveryRequest.Status is DeliveryRequestStatus.Cancelled or DeliveryRequestStatus.Done)
+            throw new Exception($"Attempt to cancel cancelled or completed delivery request {deliveryRequestId}");
+
+        if (string.IsNullOrEmpty(comment))
+            throw new ArgumentException("Attempt to cancel delivery request with null or empty comment", nameof(comment));
 
         var cancelComment = new CancelComment() { Comment = comment, DeliveryRequestId = deliveryRequest.Id };
 
@@ -73,7 +77,11 @@ public record DeliveryRequestService(
     {
         var deliveryRequest = await DeliveryRequestRepository.GetByIdAsync(deliveryRequestId, cancellationToken);
 
-        if (deliveryRequest == null) throw new NullReferenceException($"Attempt to complete nonexistent delivery request");
+        if (deliveryRequest == null)
+            throw new NullReferenceException($"Attempt to complete nonexistent delivery request {deliveryRequestId}");
+
+        if (deliveryRequest.Status is DeliveryRequestStatus.Cancelled)
+            throw new Exception($"Attempt to complete cancelled request {deliveryRequestId}");
 
         deliveryRequest.Status = DeliveryRequestStatus.Done;
 
@@ -92,10 +100,10 @@ public record DeliveryRequestService(
     {
         var deliveryRequest = await DeliveryRequestRepository.GetByIdAsync(deliveryRequestId, cancellationToken);
 
-        if (deliveryRequest == null) throw new NullReferenceException($"Attempt to edit nonexistent delivery request");
+        if (deliveryRequest == null) throw new NullReferenceException($"Attempt to edit nonexistent delivery request {deliveryRequestId}");
 
         if (deliveryRequest.Status is not DeliveryRequestStatus.New)
-            throw new Exception("Attempt to edit delivery request which status is not New");
+            throw new Exception($"Attempt to edit delivery request {deliveryRequestId} which status is not New");
 
         if (string.IsNullOrEmpty(departureAddress)) deliveryRequest.DepartureAddress = departureAddress!;
 
@@ -110,5 +118,18 @@ public record DeliveryRequestService(
         if (cargoId.HasValue) deliveryRequest.CargoId = cargoId.Value;
 
         await DeliveryRequestRepository.UpdateAsync(deliveryRequest, cancellationToken);
+    }
+
+    public async Task DeleteAsync(Guid deliveryRequestId, CancellationToken cancellationToken)
+    {
+        var deliveryRequest = await DeliveryRequestRepository.GetByIdAsync(deliveryRequestId, cancellationToken);
+
+        if (deliveryRequest == null)
+            throw new NullReferenceException($"Attempt to delete nonexistent delivery request {deliveryRequestId}");
+
+        if (deliveryRequest.Status is not DeliveryRequestStatus.New)
+            throw new Exception($"Attempt to delete delivery request {deliveryRequestId} which status is not New");
+
+        await DeliveryRequestRepository.RemoveAsync(deliveryRequest, cancellationToken);
     }
 }
