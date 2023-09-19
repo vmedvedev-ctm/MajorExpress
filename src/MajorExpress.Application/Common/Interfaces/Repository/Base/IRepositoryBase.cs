@@ -21,5 +21,5 @@ public interface IRepositoryBase<TEntity>
 
     Task RemoveAsync(TEntity domainObject, CancellationToken cancellationToken);
 
-    Task<ICollection<TEntity>> GetNoTrackingFulledListAsync(CancellationToken cancellationToken);
+    Task<ICollection<TEntity>> GetNoTrackingListAsync(CancellationToken cancellationToken);
 }
